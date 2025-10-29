@@ -178,7 +178,7 @@ h1 {
       <img src="rare-gun-skin.png" alt="Rare Gun Skin"><div class="label">Rare Gun Skin Box</div>
     </div>
     <div class="card" data-idx="3">
-      <img src="rare-dress.png" alt="Rare Dress"><div class="label">Rare Dress</div>
+      <img src="rare-dress.jpg" alt="Rare Dress"><div class="label">Rare Dress</div>
     </div>
     <div class="card" data-idx="4">
       <img src="pet-box.png" alt="Pet Box"><div class="label">Pet Box</div>
@@ -245,32 +245,42 @@ h1 {
   let currentWinnerIndex = null;
 
   function spinCards() {
-    // Remove winner class from all cards
+    // Remove winner mark from all cards initially
     document.querySelectorAll('.card').forEach(card => card.classList.remove('winner'));
 
     currentWinnerIndex = Math.floor(Math.random() * prizes.length);
 
-    let rounds = 15;
+    let rounds = 10;          // full animation cycles count
+    let cardsCount = prizes.length;
     let delay = 100;
 
-    function animate(i) {
-      let idx = i % prizes.length;
+    let i = 0;
+    function animate() {
+      // Remove winner class from all cards
       document.querySelectorAll('.card').forEach(card => card.classList.remove('winner'));
+
+      // Highlight current card index (simulate spinning)
+      let idx = i % cardsCount;
       let cardEl = document.querySelector(`.card[data-idx="${idx}"]`);
       cardEl.classList.add('winner');
-      if (i < rounds) {
-        setTimeout(()=> animate(i + 1), delay + i * 10);
+
+      i++;
+      // Animate until total steps (rounds * cardsCount) reached
+      if (i < rounds * cardsCount) {
+        setTimeout(animate, delay + i * 15); // slow down animation progressively
       } else {
-        // At animation end, highlight and show correct prize
-        cardEl.classList.add('winner');
+        // After animation cycles finish, highlight actual winner card
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('winner'));
+        let winnerCard = document.querySelector(`.card[data-idx="${currentWinnerIndex}"]`);
+        winnerCard.classList.add('winner');
+
         const result = document.getElementById('result');
-        result.innerHTML = `<br><b>Congratulations!<br>You won:</b><br><img src="${cardEl.querySelector('img').src}" alt="" style="width:75px;display:block;margin: 8px auto;">${prizes[currentWinnerIndex]}`;
+        result.innerHTML = `<br><b>Congratulations!<br>You won:</b><br><img src="${winnerCard.querySelector('img').src}" alt="" style="width:75px;display:block;margin: 8px auto;">${prizes[currentWinnerIndex]}`;
         showPostWinUI();
         document.getElementById('redeemBtn').dataset.prize = currentWinnerIndex;
       }
     }
-
-    animate(0);
+    animate();
   }
 
   document.getElementById('spin').onclick = spinCards;
